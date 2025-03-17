@@ -1,30 +1,26 @@
-import React, { JSX, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 type BotonProps = {
   color: string;
-  sonido: string; // Ahora el botón recibe un sonido como prop
-  tecla: string; // También recibe una tecla asignada
+  sonido: string;
+  tecla: string;
+  extraClasses?: string;
 };
 
-export default function Boton({ color, sonido, tecla }: BotonProps): JSX.Element {
-  const buttonStyle: React.CSSProperties = {
-    backgroundColor: color,
-    border: "none",
-    padding: "50px 20px",
-    color: "white",
-    borderRadius: "5px",
-    cursor: "pointer",
-    fontSize: "16px",
-    margin: "5px", // Espaciado entre botones
-  };
+export default function Boton({ color, sonido, tecla, extraClasses }: BotonProps) {
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Función para reproducir el sonido
   const reproducirSonido = () => {
-    const audio = new Audio(sonido);
+    const audio = new Audio(sonido); // 🔹 Crea una nueva instancia en cada llamada
+    audio.currentTime = 0;
     audio.play();
+
+    if (buttonRef.current) {
+      buttonRef.current.classList.add("active");
+      setTimeout(() => buttonRef.current?.classList.remove("active"), 150);
+    }
   };
 
-  // Detectar la tecla asignada y reproducir el sonido
   useEffect(() => {
     const manejarTeclado = (event: KeyboardEvent) => {
       if (event.key.toLowerCase() === tecla.toLowerCase()) {
@@ -33,14 +29,18 @@ export default function Boton({ color, sonido, tecla }: BotonProps): JSX.Element
     };
 
     window.addEventListener("keydown", manejarTeclado);
-
-    return () => {
-      window.removeEventListener("keydown", manejarTeclado);
-    };
+    return () => window.removeEventListener("keydown", manejarTeclado);
   }, [tecla]);
 
   return (
-    <button style={buttonStyle} onClick={reproducirSonido}>
+    <button
+      ref={buttonRef}
+      className={`text-black text-lg font-semibold rounded-md transition-all duration-150 ease-in-out active:scale-90 focus:outline-none focus:ring-2 focus:ring-offset-2 ${extraClasses}`}
+      style={{ backgroundColor: color }}
+      onClick={reproducirSonido}
+      aria-label={`Botón de sonido para tecla ${tecla}`}
+      tabIndex={0}
+    >
       {tecla.toUpperCase()}
     </button>
   );
