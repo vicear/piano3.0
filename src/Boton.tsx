@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 type BotonProps = {
   color: string;
@@ -9,37 +9,75 @@ type BotonProps = {
 
 export default function Boton({ color, sonido, tecla, extraClasses }: BotonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
-
-  const reproducirSonido = () => {
-    const audio = new Audio(sonido); // 🔹 Crea una nueva instancia en cada llamada
-    audio.currentTime = 0;
-    audio.play();
-
-    if (buttonRef.current) {
-      buttonRef.current.classList.add("active");
-      setTimeout(() => buttonRef.current?.classList.remove("active"), 150);
-    }
-  };
+  const audioRef = useRef<HTMLAudioElement | null>(new Audio(sonido));
+  const [teclaPresionada, setTeclaPresionada] = useState(false);
+  const tiempoMinimo = 3000; // 3 segundos
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const manejarTeclado = (event: KeyboardEvent) => {
       if (event.key.toLowerCase() === tecla.toLowerCase()) {
-        reproducirSonido();
+        if (event.type === "keydown" && !teclaPresionada) {
+          setTeclaPresionada(true);
+          reproducirSonido();
+        } else if (event.type === "keyup") {
+          manejarSoltarTecla();
+        }
       }
     };
 
     window.addEventListener("keydown", manejarTeclado);
-    return () => window.removeEventListener("keydown", manejarTeclado);
-  }, [tecla]);
+    window.addEventListener("keyup", manejarTeclado);
+
+    return () => {
+      window.removeEventListener("keydown", manejarTeclado);
+      window.removeEventListener("keyup", manejarTeclado);
+    };
+  }, [tecla, teclaPresionada]);
+
+  const reproducirSonido = () => {
+    if (audioRef.current && !teclaPresionada) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+
+      // Configuramos un temporizador de 3 segundos
+      timeoutRef.current = setTimeout(() => {
+        timeoutRef.current = null; // Se permite cortar el sonido después de este tiempo
+      }, tiempoMinimo);
+    }
+  };
+
+  const manejarSoltarTecla = () => {
+    setTeclaPresionada(false);
+    if (!timeoutRef.current) {
+      detenerSonido();
+    } else {
+      // Esperamos hasta que termine el mínimo de 3 segundos antes de detener
+      setTimeout(detenerSonido, tiempoMinimo);
+    }
+  };
+
+  const detenerSonido = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  };
 
   return (
     <button
       ref={buttonRef}
-      className={`text-black text-lg font-semibold rounded-md transition-all duration-150 ease-in-out active:scale-90 focus:outline-none focus:ring-2 focus:ring-offset-2 ${extraClasses}`}
-      style={{ backgroundColor: color }}
-      onClick={reproducirSonido}
+      className={`text-lg font-semibold rounded-none transition-all duration-150 ease-in-out active:scale-95 focus:outline-none ${extraClasses}`}
+      style={{ backgroundColor: color, color: color === "black" ? "white" : "black" }}
+      onMouseDown={() => {
+        if (!teclaPresionada) {
+          setTeclaPresionada(true);
+          reproducirSonido();
+        }
+      }}
+      onMouseUp={manejarSoltarTecla}
+      onMouseLeave={manejarSoltarTecla}
       aria-label={`Botón de sonido para tecla ${tecla}`}
-      tabIndex={0}
     >
       {tecla.toUpperCase()}
     </button>
