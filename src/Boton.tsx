@@ -5,9 +5,10 @@ type BotonProps = {
   sonido: string;
   tecla: string;
   extraClasses?: string;
+  onPresionar?: (tecla: string) => void; // Añadido para manejar el evento de presionar una tecla
 };
 
-export default function Boton({ color, sonido, tecla, extraClasses }: BotonProps) {
+export default function Boton({ color, sonido, tecla, extraClasses, onPresionar }: BotonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(new Audio(sonido));
   const [teclaPresionada, setTeclaPresionada] = useState(false);
@@ -20,6 +21,7 @@ export default function Boton({ color, sonido, tecla, extraClasses }: BotonProps
         if (event.type === "keydown" && !teclaPresionada) {
           setTeclaPresionada(true);
           reproducirSonido();
+          if (onPresionar) onPresionar(tecla); // Llamar a onPresionar
         } else if (event.type === "keyup") {
           manejarSoltarTecla();
         }
@@ -33,7 +35,7 @@ export default function Boton({ color, sonido, tecla, extraClasses }: BotonProps
       window.removeEventListener("keydown", manejarTeclado);
       window.removeEventListener("keyup", manejarTeclado);
     };
-  }, [tecla, teclaPresionada]);
+  }, [tecla, teclaPresionada, onPresionar]);
 
   const reproducirSonido = () => {
     if (audioRef.current && !teclaPresionada) {
@@ -73,6 +75,7 @@ export default function Boton({ color, sonido, tecla, extraClasses }: BotonProps
         if (!teclaPresionada) {
           setTeclaPresionada(true);
           reproducirSonido();
+          if (onPresionar) onPresionar(tecla); // Llamar a onPresionar al hacer clic
         }
       }}
       onMouseUp={manejarSoltarTecla}
