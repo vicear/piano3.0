@@ -1,0 +1,12 @@
+{
+  "partituras": [
+    {
+      "nombre": "Estrellita",
+      "teclas": ["q", "q", "t", "t", "y", "y", "t", "e", "e", "3", "3", "w", "w", "q", "t", "t", "e", "e", "3", "3", "w"]
+    },
+    {
+      "nombre": "Otra Cancion",
+      "teclas": ["w", "e", "r", "t", "y", "u", "i", "o", "p"]
+    }
+  ]
+}
