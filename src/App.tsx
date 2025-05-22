@@ -102,7 +102,12 @@ function App(): JSX.Element {
       </button>
 
       {/* Imagen */}
-      <img src="./public/estrellita.png" alt="Piano" className="w-170 mb-4" />
+{/* Imagen dinámica de la partitura */}
+<img
+  src={PARTITURAS[partituraIndex].imagen}
+  alt={`Partitura de ${PARTITURAS[partituraIndex].nombre}`}
+  className="w-170 mb-4"
+/>
 
       {/* Partitura */}
       <div className="mb-2">
@@ -119,15 +124,47 @@ function App(): JSX.Element {
         </select>
       </div>
 
-      {/* Piano */}
       <div className={`relative p-4 rounded-lg shadow-lg ${pianoBackground}`}>
         <div className="w-full h-1 bg-red-600 absolute top-0 left-0" />
+
+        {/* Contenedor de teclas blancas */}
         <div className="relative flex">
-          {/* Aquí mantén todos tus <Boton /> como los tienes */}
-          {/* ... (copiar los botones que ya tienes) */}
+          <Boton color="white" sonido={sonidoDo} tecla="q" extraClasses="w-16 h-48 border border-gray-700 rounded-none text-black flex justify-center items-end pb-10" onPresionar={registrarTecla} />
+          <Boton color="white" sonido={sonidoRe} tecla="w" extraClasses="w-16 h-48 border border-gray-700 rounded-none text-black flex justify-center items-end pb-10" onPresionar={registrarTecla} />
+          <Boton color="white" sonido={sonidoMi} tecla="e" extraClasses="w-16 h-48 border border-gray-700 rounded-none text-black flex justify-center items-end pb-10" onPresionar={registrarTecla} />
+          <Boton color="white" sonido={sonidoFa} tecla="r" extraClasses="w-16 h-48 border border-gray-700 rounded-none text-black flex justify-center items-end pb-10" onPresionar={registrarTecla} />
+          <Boton color="white" sonido={sonidoSol} tecla="t" extraClasses="w-16 h-48 border border-gray-700 rounded-none text-black flex justify-center items-end pb-10" onPresionar={registrarTecla} />
+          <Boton color="white" sonido={sonidoLa} tecla="y" extraClasses="w-16 h-48 border border-gray-700 rounded-none text-black flex justify-center items-end pb-10" onPresionar={registrarTecla} />
+          <Boton color="white" sonido={sonidoSi} tecla="u" extraClasses="w-16 h-48 border border-gray-700 rounded-none text-black flex justify-center items-end pb-10" onPresionar={registrarTecla} />
+          <Boton color="white" sonido={sonidoDo} tecla="z" extraClasses="w-16 h-48 border border-gray-700 rounded-none text-black flex justify-center items-end pb-10" onPresionar={registrarTecla} />
+          <Boton color="white" sonido={sonidoRe} tecla="x" extraClasses="w-16 h-48 border border-gray-700 rounded-none text-black flex justify-center items-end pb-10" onPresionar={registrarTecla} />
+          <Boton color="white" sonido={sonidoMi} tecla="c" extraClasses="w-16 h-48 border border-gray-700 rounded-none text-black flex justify-center items-end pb-10" onPresionar={registrarTecla} />
+          <Boton color="white" sonido={sonidoFa} tecla="v" extraClasses="w-16 h-48 border border-gray-700 rounded-none text-black flex justify-center items-end pb-10" onPresionar={registrarTecla} />
+          <Boton color="white" sonido={sonidoSol} tecla="b" extraClasses="w-16 h-48 border border-gray-700 rounded-none text-black flex justify-center items-end pb-10" onPresionar={registrarTecla} />
+          <Boton color="white" sonido={sonidoLa} tecla="n" extraClasses="w-16 h-48 border border-gray-700 rounded-none text-black flex justify-center items-end pb-10" onPresionar={registrarTecla} />
+          <Boton color="white" sonido={sonidoSi} tecla="m" extraClasses="w-16 h-48 border border-gray-700 rounded-none text-black flex justify-center items-end pb-10" onPresionar={registrarTecla} />
+          <Boton color="white" sonido={sonidoDo} tecla="," extraClasses="w-16 h-48 border border-gray-700 rounded-none text-black flex justify-center items-end pb-10" onPresionar={registrarTecla} />
+        </div>
+
+        {/* Teclas negras */}
+        <div className="absolute top-0 left-0 w-full h-32 flex justify-center">
+          <div className="relative w-[272px]">
+            <Boton color="black" sonido={sonidoDo} tecla="2" extraClasses="w-8 h-32 absolute left-[-296px] top-0 z-10 text-white" onPresionar={registrarTecla} />
+            <Boton color="black" sonido={sonidoRe} tecla="3" extraClasses="w-8 h-32 absolute left-[-232px] top-0 z-10 text-white" onPresionar={registrarTecla} />
+            <Boton color="black" sonido={sonidoFa} tecla="5" extraClasses="w-8 h-32 absolute left-[-105px] top-0 z-10 text-white" onPresionar={registrarTecla} />
+            <Boton color="black" sonido={sonidoSol} tecla="6" extraClasses="w-8 h-32 absolute left-[-41px] top-0 z-10 text-white" onPresionar={registrarTecla} />
+            <Boton color="black" sonido={sonidoLa} tecla="7" extraClasses="w-8 h-32 absolute left-[23px] top-0 z-10 text-white" onPresionar={registrarTecla} />
+            
+            <Boton color="black" sonido={sonidoDo} tecla="s" extraClasses="w-8 h-32 absolute left-[150px] top-0 z-10 text-white" onPresionar={registrarTecla} />
+            <Boton color="black" sonido={sonidoRe} tecla="d" extraClasses="w-8 h-32 absolute left-[215px] top-0 z-10 text-white" onPresionar={registrarTecla} />
+            <Boton color="black" sonido={sonidoFa} tecla="f" extraClasses="w-8 h-32 absolute left-[343px] top-0 z-10 text-white" onPresionar={registrarTecla} />
+            <Boton color="black" sonido={sonidoSol} tecla="h" extraClasses="w-8 h-32 absolute left-[408px] top-0 z-10 text-white" onPresionar={registrarTecla} />
+            <Boton color="black" sonido={sonidoLa} tecla="j" extraClasses="w-8 h-32 absolute left-[470px] top-0 z-10 text-white" onPresionar={registrarTecla} />
+            <Boton color="black" sonido={sonidoLa} tecla="l" extraClasses="w-8 h-32 absolute left-[600px] top-0 z-10 text-white" onPresionar={registrarTecla} />
+
+          </div>
         </div>
       </div>
-
       {/* Controles */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-4">
         <button onClick={reiniciarJuego} className={`px-4 py-2 ${buttonThemeClasses} text-white rounded-lg`}>

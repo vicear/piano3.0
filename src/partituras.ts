@@ -5,13 +5,20 @@ export type Partitura = {
   teclas: string[];
 };
 
-export const PARTITURAS: Partitura[] = [
+export const PARTITURAS = [
   {
     nombre: "Estrellita",
-    teclas: ["q", "q", "t", "t", "y", "y", "t", "e", "e", "3", "3", "w", "w", "q", "t", "t", "e", "e", "3", "3", "w"],
+    teclas: [
+      "b", "b", "n", "b", "z", "m", 
+      "b", "b","n", "b", "x", "z",
+    "b", "b", "b", "c", "z", "m", "n",
+  "v", "v", "c", "z", "x","x"],
+    imagen: "/estrellita.png"
   },
   {
-    nombre: "Canción 2",
-    teclas: ["w", "w", "e", "e", "q", "q", "t", "t", "y", "y", "t", "q"],
+    nombre: "Cumpleaños Feliz",
+    teclas: ["q", "q", "r", "q", "t", "e"],
+    imagen: "/cumple.png"
   },
+  // Agrega más partituras...
 ];
